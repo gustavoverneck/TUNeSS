@@ -1,8 +1,10 @@
+# src/builder
+
 import warnings
+from ..kernels.utils import F77_PROGRAM_END, F77_PROGRAM_START, F77_DEFAULT_SPACING
+from ..utils.converters import to_f77_spacing
 
-# src/header
-
-class F77Header:
+class F77Builder:
     def __init__(self,
                  parametrization: str|None = None,
                  use_magnetic_field: bool = False, 
@@ -22,9 +24,13 @@ class F77Header:
         self.lsv_xi = lsv_xi    # Lorentz Symmetry Violation Background Field term
         self.nlem_xi = nlem_xi  # Nonlinear Magnetic Field term
         
+        self.parametrization = parametrization.strip().lower() if parametrization is not None else None
         self.lsv_model = lsv_model.strip().lower() if lsv_model is not None else None
         self.nlem_model = nlem_model.strip().lower() if nlem_model is not None else None
 
+        # Check Parametrization
+        if parametrization not in self.AVAILABLE_PARAMETRIZATIONS:
+            raise ValueError(f"Invalid Parametrization model '{parametrization}'. Available models: {self.AVAILABLE_PARAMETRIZATIONS}")
         # Check LSV model availability
         if use_lsv and lsv_model not in self.AVAILABLE_LSV_MODELS:
             raise ValueError(f"Invalid LSV model '{lsv_model}'. Available models: {self.AVAILABLE_LSV_MODELS}")
@@ -37,3 +43,12 @@ class F77Header:
         # Check NLEM usage
         if nlem_model != None and not use_nlem:
             warnings.warn("NLEM model is specified but use_nlem is False. The model will be ignored.", UserWarning)
+        
+        # Define code variable to be build
+        self.code = r""""""
+        
+    def write_f77_start(self):
+        self.code += F77_PROGRAM_START + "\n"
+        
+    def write_f77_end(self):
+        self.code += F77_PROGRAM_END + "\n"
