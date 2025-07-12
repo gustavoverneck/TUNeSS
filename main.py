@@ -1,7 +1,17 @@
-import tuness
-import tuness.src
-import tuness.src.builder
+from tuness import TUNeSS, build
 
-builder = tuness.src.builder.F77Builder(parametrization="gm1")
+# Initialize F77 Kernel
+kernel = build(parametrization = None,
+                 use_magnetic = False, 
+                 use_lsv = False, 
+                 use_nlem = False, 
+                 b_gauss = 0.0, 
+                 lsv_xi = 0.0, 
+                 nlem_xi = 0.0, 
+                 lsv_model = None, 
+                 nlem_model = None,
+                 )
 
-builder.write_f77_start()
+# Initialize TUNeSS Solver
+solver = TUNeSS()
+res = solver.run()
