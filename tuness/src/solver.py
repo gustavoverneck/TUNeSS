@@ -1,4 +1,4 @@
-from .builder import KernelBuilder
+from .builder import build_kernel
 
 class TUNeSS:
     def __init__(self):
@@ -15,6 +15,6 @@ class TUNeSS:
         else:
             raise TypeError("kernels must be either a raw string instance or a list of raw strings instances")
         
-        
-        
-        return
+        # Example usage of build_kernel on each kernel in the list
+        built_kernels = [build_kernel(kernel) for kernel in kernel_list]
+        return built_kernels

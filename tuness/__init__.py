@@ -1,5 +1,5 @@
 # TUNeSS package initialization
-from .src import TUNeSS, build
+from .src import TUNeSS, build_kernel
 
 # Make TUNeSS available at package level
-__all__ = ['TUNeSS', 'build']
+__all__ = ['TUNeSS', 'build_kernel']

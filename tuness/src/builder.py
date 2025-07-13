@@ -2,13 +2,14 @@
 
 import warnings
 from ..kernels.utils import F77_PROGRAM_END, F77_PROGRAM_START, F77_DEFAULT_SPACING
+from ..kernels.parametrizations import GM1_PARAMETRIZATION, GM3_PARAMETRIZATION
 from ..utils.converters import to_f77_spacing
 
 AVAILABLE_LSV_MODELS = ("a", "isolated")
 AVAILABLE_NLEM_MODELS = ("log", "born-infeld")
 AVAILABLE_PARAMETRIZATIONS = ("gm1", "gm3")
 
-def build(parametrization: str|None = None, 
+def build_kernel(parametrization: str|None = None, 
           use_magnetic: bool = False, 
           use_lsv: bool = False, 
           use_nlem: bool = False, 
@@ -44,6 +45,32 @@ def build(parametrization: str|None = None,
     if use_nlem and nlem_model is None:
         warnings.warn("use_nlem is True but no nlem_model is specified.", UserWarning)
     
+    # Create raw string to store f77 code
     code = r""""""
 
+    # Add f77 program start
+    code += F77_PROGRAM_START + "\n"
+    
+    # Add f77 implicit types
+    code += get_f77_implicit() + "\n"
+    
+    # 
+    
+    # Add f77 program end
+    code += F77_PROGRAM_END
+    
+    print()
+
     return code
+
+def get_f77_parametrization(parametrization : str):
+    match parametrization:
+        case "gm1":
+            return GM1_PARAMETRIZATION
+        case "gm3":
+            return GM3_PARAMETRIZATION
+        case _:
+            raise ValueError(f"Unknown parametrization '{parametrization}'. Available: {AVAILABLE_PARAMETRIZATIONS}")
+        
+def get_f77_implicit():
+    return "      implicit double precision(a-h,k-z)"

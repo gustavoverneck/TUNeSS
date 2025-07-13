@@ -1,7 +1,7 @@
-from tuness import TUNeSS, build
+from tuness import TUNeSS, build_kernel
 
 # Initialize F77 Kernel
-kernel = build(parametrization = None,
+kernel = build_kernel(parametrization = "gm1",
                  use_magnetic = False, 
                  use_lsv = False, 
                  use_nlem = False, 
@@ -12,6 +12,9 @@ kernel = build(parametrization = None,
                  nlem_model = None,
                  )
 
-# Initialize TUNeSS Solver
-solver = TUNeSS()
-res = solver.run()
+print(kernel)
+
+# # Initialize TUNeSS Solver
+# solver = TUNeSS()
+
+# res = solver.run()
